@@ -1,0 +1,21 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.page {
+  padding: 50px 50px 0;
+  border-bottom: 2px dashed #000;
+}
+
+.daohero {
+  display: inline-block;
+  width: 30px;
+  height: 55px;
+  background: #ddd;
+  border-radius: 15px 15px 0 0;
+  transform: translateX(0);
+  transition: transform .1s;
+  box-shadow: rgb(0, 0, 0) 0px 19px 25px -13px;
+}
