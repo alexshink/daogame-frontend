@@ -5,17 +5,36 @@
 }
 
 .page {
-  padding: 50px 50px 0;
+  position: relative;
+  height: 250px;
+  margin: 100px 50px 0;
   border-bottom: 2px dashed #000;
 }
 
 .daohero {
-  display: inline-block;
-  width: 30px;
-  height: 55px;
-  background: #ddd;
+  position: absolute;
+  bottom: 0;
+  left: 20px;
+  width: 40px;
+  height: 84px;
+  background: url(img/daohero.gif) no-repeat center;
   border-radius: 15px 15px 0 0;
-  transform: translateX(0);
-  transition: transform .1s;
-  box-shadow: rgb(0, 0, 0) 0px 19px 25px -13px;
+  transition: left .2s, bottom .2s;
+  box-shadow: 0px 17px 25px -17px #000;
+}
+
+.daohero_jump {
+  box-shadow: none;
+}
+
+.daohero_run {
+  width: 60px;
+}
+
+.daohero_run_right {
+  background: url(img/daohero_run_right.gif) no-repeat center;
+}
+
+.daohero_run_left {
+  background: url(img/daohero_run_left.gif) no-repeat center;
 }
