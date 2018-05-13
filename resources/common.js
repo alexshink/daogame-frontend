@@ -33,27 +33,39 @@ $(document).ready(function(){
         }, 200)
       } else if ( keyPressed == 39 ) {
         $('.' + eClass).addClass('daohero_run');
-        $('.' + eClass).css('left', '+=' + distance);
+        $('.' + eClass).css('left', distance);
         $('.' + eClass).addClass('daohero_run_right');
       } else if ( keyPressed == 37 ) {
         $('.' + eClass).addClass('daohero_run');
-        $('.' + eClass).css('left', '+=' + distance);
+        $('.' + eClass).css('left', distance);
         $('.' + eClass).addClass('daohero_run_left');
       }
-      }
+    }
 
     $(document).bind('keydown', function(e){
+
+      ws.onmessage = function(e){
+        wsData = JSON.parse(e.data);
+        console.log(wsData.X)
+        if ( keyPressed == 39 || keyPressed == 37 ) {
+          move('daohero', wsData.X);
+        }
+        setTimeout(function(){
+          $('.daohero').removeClass('daohero_jump daohero_run daohero_run_left daohero_run_right')
+        }, 200)
+      }
+
       if ( $.inArray(e.keyCode, moveKeys) !== -1 ) {
         
         window.keyPressed = e.keyCode;
 
         switch(keyPressed) { 
           case 39:
-            move('daohero', 60);
+            ws.send('right');
             break
 
           case 37:
-            move('daohero', -60);
+            ws.send('left');
             break
 
           case 38:
@@ -61,12 +73,6 @@ $(document).ready(function(){
             break
         }
       }
-    });
-
-    $(document).keyup(function(e) {   
-       if ( $.inArray(e.which, moveKeys) !== -1 ){
-          $('.daohero').removeClass('daohero_jump daohero_run daohero_run_left daohero_run_right')
-       }
     });
 
   } // end Game()
