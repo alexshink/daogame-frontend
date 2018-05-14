@@ -44,11 +44,14 @@ $(document).ready(function(){
           switch(e.keyCode){
             case 39:
               daohero.move('right');
+              $('.daohero').addClass('daohero_run_right');
             break;
             case 37:
               daohero.move('left');
+              $('.daohero').addClass('daohero_run_left');
             break;
           }
+          $('.daohero').addClass('daohero_run');
         }
       });
       
@@ -57,6 +60,12 @@ $(document).ready(function(){
     };                                
     
     initMove();
+
+    $(document).keyup(function(e){ 
+      if ( e.keyCode == 39 || e.keyCode == 37 ) {
+        $('.daohero').removeClass('daohero_run daohero_run_right daohero_run_left');
+      }
+    })
 
   } // end Game()
 
