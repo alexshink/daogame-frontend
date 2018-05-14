@@ -14,7 +14,7 @@
 .daohero {
   position: absolute;
   bottom: 0;
-  width: 40px;
+  width: 60px;
   height: 84px;
   background: url(img/daohero.gif) no-repeat center;
   border-radius: 15px 15px 0 0;
@@ -23,10 +23,6 @@
 
 .daohero_jump {
   box-shadow: none;
-}
-
-.daohero_run {
-  width: 60px;
 }
 
 .daohero_run_right {

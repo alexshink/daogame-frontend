@@ -20,7 +20,7 @@ $(document).ready(function(){
 
     ws.onmessage = function(e){
       wsData = JSON.parse(e.data);
-      $('.daohero').animate({left: wsData.player.x}, 200, 'linear');
+      $('.daohero').animate({left: wsData.player.x}, 250, 'linear');
       console.log(wsData.player.x)
     }
 
@@ -51,7 +51,6 @@ $(document).ready(function(){
               $('.daohero').addClass('daohero_run_left');
             break;
           }
-          $('.daohero').addClass('daohero_run');
         }
       });
       
@@ -63,7 +62,9 @@ $(document).ready(function(){
 
     $(document).keyup(function(e){ 
       if ( e.keyCode == 39 || e.keyCode == 37 ) {
-        $('.daohero').removeClass('daohero_run daohero_run_right daohero_run_left');
+        setTimeout(function(){
+          $('.daohero').removeClass('daohero_run daohero_run_right daohero_run_left');
+        }, 500)
       }
     })
 
