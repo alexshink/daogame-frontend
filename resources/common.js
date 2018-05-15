@@ -18,9 +18,21 @@ $(document).ready(function(){
 
   function Game(){
 
+    var keyState = {};    
+    window.addEventListener('keydown',function(e){
+        keyState[e.keyCode || e.which] = true;
+    },true);    
+    window.addEventListener('keyup',function(e){
+        keyState[e.keyCode || e.which] = false;
+        setTimeout(function(){
+          $('.daohero').removeClass('daohero_run daohero_run_right daohero_run_left');
+        }, 400)
+    },true);
+
     ws.onmessage = function(e){
       wsData = JSON.parse(e.data);
       $('.daohero').animate({left: wsData.player.x}, 250, 'linear');
+      console.log(wsData)
     }
 
     function Character(movespeed){
@@ -38,20 +50,15 @@ $(document).ready(function(){
       };
     }
     var initMove = function(){
-      $(document).keydown(function(e){ 
-        if ( e.keyCode == 39 || e.keyCode == 37 ) {
-          switch(e.keyCode){
-            case 39:
-              daohero.move('right');
-              $('.daohero').addClass('daohero_run_right');
-            break;
-            case 37:
-              daohero.move('left');
-              $('.daohero').addClass('daohero_run_left');
-            break;
-          }
-        }
-      });
+      if (keyState[39] || keyState[68]){
+        daohero.move('right');
+        $('.daohero').addClass('daohero_run_right');
+      } else if (keyState[37] || keyState[65]){
+        daohero.move('left');
+        $('.daohero').addClass('daohero_run_left');
+      }
+
+      setTimeout(initMove, 250);
       
       daohero = new Character(5);
 
@@ -59,13 +66,13 @@ $(document).ready(function(){
     
     initMove();
 
-    $(document).keyup(function(e){ 
-      if ( e.keyCode == 39 || e.keyCode == 37 ) {
-        setTimeout(function(){
-          $('.daohero').removeClass('daohero_run daohero_run_right daohero_run_left');
-        }, 500)
-      }
-    })
+    // $(document).keyup(function(e){ 
+    //   if ( e.keyCode == 39 || e.keyCode == 37 ) {
+    //     setTimeout(function(){
+    //       $('.daohero').removeClass('daohero_run daohero_run_right daohero_run_left');
+    //     }, 500)
+    //   }
+    // })
 
   } // end Game()
 
