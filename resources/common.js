@@ -21,7 +21,6 @@ $(document).ready(function(){
     ws.onmessage = function(e){
       wsData = JSON.parse(e.data);
       $('.daohero').animate({left: wsData.player.x}, 250, 'linear');
-      console.log(wsData.player.x)
     }
 
     function Character(movespeed){
