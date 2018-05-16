@@ -31,7 +31,7 @@ $(document).ready(function(){
 
     ws.onmessage = function(e){
       wsData = JSON.parse(e.data);
-      $('.daohero').animate({left: wsData.player.x / 2}, 100, 'linear');
+      $('.daohero').animate({left: wsData.player.x}, 100, 'linear');
       console.log(wsData)
     }
 
@@ -65,14 +65,6 @@ $(document).ready(function(){
     };                                
     
     initMove();
-
-    // $(document).keyup(function(e){ 
-    //   if ( e.keyCode == 39 || e.keyCode == 37 ) {
-    //     setTimeout(function(){
-    //       $('.daohero').removeClass('daohero_run daohero_run_right daohero_run_left');
-    //     }, 500)
-    //   }
-    // })
 
   } // end Game()
 
