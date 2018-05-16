@@ -24,9 +24,11 @@ $(document).ready(function(){
     },true);    
     window.addEventListener('keyup',function(e){
         keyState[e.keyCode || e.which] = false;
-        setTimeout(function(){
-          $('.daohero').removeClass('daohero_run daohero_run_right daohero_run_left');
-        }, 200)
+        if ( e.keyCode == 37 || e.keyCode == 39 ) {
+          setTimeout(function(){
+            $('.daohero').removeClass('daohero_run_right daohero_run_left');
+          }, 200)
+        }
     },true);
 
     ws.onmessage = function(e){
