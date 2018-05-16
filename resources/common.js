@@ -26,12 +26,12 @@ $(document).ready(function(){
         keyState[e.keyCode || e.which] = false;
         setTimeout(function(){
           $('.daohero').removeClass('daohero_run daohero_run_right daohero_run_left');
-        }, 400)
+        }, 200)
     },true);
 
     ws.onmessage = function(e){
       wsData = JSON.parse(e.data);
-      $('.daohero').animate({left: wsData.player.x}, 250, 'linear');
+      $('.daohero').animate({left: wsData.player.x / 2}, 100, 'linear');
       console.log(wsData)
     }
 
@@ -58,9 +58,9 @@ $(document).ready(function(){
         $('.daohero').addClass('daohero_run_left');
       }
 
-      setTimeout(initMove, 250);
+      setTimeout(initMove, 130);
       
-      daohero = new Character(5);
+      daohero = new Character(11);
 
     };                                
     
