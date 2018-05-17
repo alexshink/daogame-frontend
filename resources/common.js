@@ -6,13 +6,30 @@ $(document).ready(function(){
   ws.onopen = function(){
     console.log('Соединение установлено');
     ws.send('reset');
+    ws.send('map');
   };
 
   ws.onmessage = function(e){
     console.log('Получаем reset: ' + e.data);
     wsData = JSON.parse(e.data);
-    $('.daohero').css('left', wsData.player.x);
-    Game();
+  // player geo
+    if ( wsData.player != undefined ) {
+      $('.daohero').css('left', wsData.player.x);
+    }
+  // map
+    if ( wsData.map != undefined ) {
+      $('.page').css('width', wsData.map.size);
+      var obj = wsData.map.objects; 
+      for ( var i=0; i<wsData.map.objects.length; i++ ) {
+        $('.page').append('<div class="object object_' + obj[i].type + '"' 
+                            + 'passable="' + obj[i].passable + '"'
+                            + 'style="left:' + obj[i].x + 'px"></div>');
+      }
+    }
+    setTimeout(function(){
+      Game();
+    }, 500)
+
     console.log('Игра запущена');
   };
 

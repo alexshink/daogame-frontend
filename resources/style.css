@@ -6,9 +6,9 @@
 
 .page {
   position: relative;
-  height: 250px;
-  margin: 100px 50px 0;
+  height: 350px;
   border-bottom: 2px dashed #000;
+  backface-visibility: hidden;
 }
 
 .daohero {
@@ -31,4 +31,25 @@
 
 .daohero_run_left {
   background: url(img/daohero_run_left.gif) no-repeat center;
+}
+
+.object {
+  position: absolute;
+  bottom: 0;
+}
+
+.object_balloon {
+  width: 65px;
+  height: 100px;
+  bottom: 40px;
+  background: url(img/balloon.gif) no-repeat center;
+  background-size: contain;
+}
+
+.object_fence {
+  width: 60px;
+  height: 70px;
+  background-size: 60px;
+  bottom: -10px;
+  background: url(img/fence.png) no-repeat center;
 }
