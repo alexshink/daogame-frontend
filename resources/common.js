@@ -5,31 +5,24 @@ $(document).ready(function(){
 
   ws.onopen = function(){
     console.log('Соединение установлено');
-    ws.send('reset');
-    ws.send('map');
+    ws.send('player+map');
   };
 
   ws.onmessage = function(e){
     console.log('Получаем reset: ' + e.data);
     wsData = JSON.parse(e.data);
   // player geo
-    if ( wsData.player != undefined ) {
-      $('.daohero').css('left', wsData.player.x);
-    }
+    $('.daohero').css('left', wsData.player.x);
   // map
-    if ( wsData.map != undefined ) {
-      $('.page').css('width', wsData.map.size);
-      var obj = wsData.map.objects; 
-      for ( var i=0; i<wsData.map.objects.length; i++ ) {
-        $('.page').append('<div class="object object_' + obj[i].type + '"' 
-                            + 'passable="' + obj[i].passable + '"'
-                            + 'style="left:' + obj[i].x + 'px"></div>');
-      }
+    $('.page').css('width', wsData.map.size);
+    var obj = wsData.map.objects; 
+    for ( var i=0; i<wsData.map.objects.length; i++ ) {
+      $('.page').append('<div class="object object_' + obj[i].type + '"' 
+                          + 'passable="' + obj[i].passable + '"'
+                          + 'style="left:' + obj[i].x + 'px"></div>');
     }
-    setTimeout(function(){
-      Game();
-    }, 500)
-
+  // run game
+    Game();
     console.log('Игра запущена');
   };
 
@@ -51,7 +44,9 @@ $(document).ready(function(){
     ws.onmessage = function(e){
       wsData = JSON.parse(e.data);
       $('.daohero').animate({left: wsData.player.x}, 100, 'linear');
-      console.log(wsData)
+      $('.daohero_jump').animate({bottom: wsData.player.jumpHeight}, 100, 'linear', function(){
+        $(this).animate({bottom: 0})
+      });
     }
 
     function Character(movespeed){
@@ -69,12 +64,16 @@ $(document).ready(function(){
       };
     }
     var initMove = function(){
-      if (keyState[39] || keyState[68]){
+      if ( keyState[39] ){
         daohero.move('right');
         $('.daohero').addClass('daohero_run_right');
-      } else if (keyState[37] || keyState[65]){
+      } else if ( keyState[37] ){
         daohero.move('left');
         $('.daohero').addClass('daohero_run_left');
+      }
+      if ( keyState[38] ){
+        daohero.move('jumpright');
+        $('.daohero').addClass('daohero_jump');
       }
 
       setTimeout(initMove, 130);
