@@ -36,20 +36,13 @@
 .object {
   position: absolute;
   bottom: 0;
+  background: red;
 }
 
 .object_balloon {
-  width: 65px;
-  height: 100px;
+  width: 65px !important;
+  height: 100px !important;
   bottom: 40px;
   background: url(img/balloon.gif) no-repeat center;
   background-size: contain;
-}
-
-.object_fence {
-  width: 60px;
-  height: 70px;
-  background-size: 60px;
-  bottom: -10px;
-  background: url(img/fence.png) no-repeat center;
 }

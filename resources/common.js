@@ -16,10 +16,12 @@ $(document).ready(function(){
   // map
     $('.page').css('width', wsData.map.size);
     var obj = wsData.map.objects; 
-    for ( var i=0; i<wsData.map.objects.length; i++ ) {
+    for ( var i=0; i<obj.length; i++ ) {
       $('.page').append('<div class="object object_' + obj[i].type + '"' 
                           + 'passable="' + obj[i].passable + '"'
-                          + 'style="left:' + obj[i].x + 'px"></div>');
+                          + 'style="left:' + obj[i].x + 'px;'
+                          + 'width:' + obj[i].size + 'px;'
+                          + 'height:' + obj[i].height + 'px;"></div>');
     }
   // run game
     Game();
@@ -30,31 +32,21 @@ $(document).ready(function(){
 
     var keyState = {};    
     window.addEventListener('keydown',function(e){
-        keyState[e.keyCode || e.which] = true;
+      keyState[e.keyCode] = true;
     },true);    
     window.addEventListener('keyup',function(e){
-        keyState[e.keyCode || e.which] = false;
-        if ( e.keyCode == 37 || e.keyCode == 39 ) {
-          setTimeout(function(){
-            $('.daohero').removeClass('daohero_run_right daohero_run_left');
-          }, 200)
-        }
+      keyState[e.keyCode] = false;
+      if ( e.keyCode == 37 || e.keyCode == 39 ) {
+        setTimeout(function(){
+          $('.daohero').removeClass('daohero_run_right daohero_run_left');
+        }, 200)
+      }
     },true);
 
-    ws.onmessage = function(e){
-      wsData = JSON.parse(e.data);
-      $('.daohero').animate({left: wsData.player.x}, 100, 'linear');
-      $('.daohero_jump').animate({bottom: wsData.player.jumpHeight}, 100, 'linear', function(){
-        $(this).animate({bottom: 0})
-      });
-    }
-
     function Character(movespeed){
-
       this.speed = movespeed;
       var player = this;
       var lastMove = new Date();
-      
       this.move = function(direction){
         var newMove = new Date();
         if ( (newMove - lastMove) / 1000 > 1/player.speed ){ 
@@ -63,17 +55,46 @@ $(document).ready(function(){
         }
       };
     }
-    var initMove = function(){
-      if ( keyState[39] ){
-        daohero.move('right');
-        $('.daohero').addClass('daohero_run_right');
-      } else if ( keyState[37] ){
-        daohero.move('left');
-        $('.daohero').addClass('daohero_run_left');
+
+    var jumpDistantion;
+
+    function jump(direction){
+      ws.onmessage = function(e){
+        console.log('jump' + e.data)
+        wsData = JSON.parse(e.data);
+        if ( direction == 'jumpright' ) {
+          jumpDistantion = wsData.player.x-5;
+        } else {
+          jumpDistantion = wsData.player.x+5;
+        }
+        $('.daohero_jump').animate({left: jumpDistantion, bottom: wsData.player.jumpHeight}, 100, 'linear', function(){
+          $('.daohero_jump').animate({left: wsData.player.x, bottom: 0}, 100);
+        });
       }
-      if ( keyState[38] ){
-        daohero.move('jumpright');
+      daohero.move(direction);
+    }
+
+    var initMove = function(){
+      if ( !keyState[38] && keyState[39] || keyState[37] ){
+        ws.onmessage = function(e){
+          console.log(e.data)
+          wsData = JSON.parse(e.data);
+          $('.daohero').animate({left: wsData.player.x}, 100, 'linear');
+        }
+        if ( keyState[39] ){
+          daohero.move('right');
+          $('.daohero').addClass('daohero_run_right');
+        } else if ( keyState[37] ){
+          daohero.move('left');
+          $('.daohero').addClass('daohero_run_left');
+        }
+      }
+      if ( keyState[38] && keyState[39] || keyState[38] ){
         $('.daohero').addClass('daohero_jump');
+        jump('jumpright');
+      } else if ( keyState[38] && keyState[37] ){
+        $('.daohero').addClass('daohero_jump');
+        jump('jumpleft');
       }
 
       setTimeout(initMove, 130);
